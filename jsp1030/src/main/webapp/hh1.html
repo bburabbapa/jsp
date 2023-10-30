@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<title>form파일</title>
+		<script src="http://code.jquery.com/jquery-latest.min.js"></script>
+		<style>
+			
+			
+			
+		</style>
+		<script>
+			//제이쿼리
+			$(function(){
+				$("#btn").click(function(){
+				alert("test")
+				if($("#name").val()==""){
+					alert("이름을 입력하세요");	
+				$("#name").focus();
+				return false;
+				}
+				frm.submit();
+				});
+				});
+			
+			
+				//자바스크립트구문
+				function checkBtn(){
+				//자바스크립트 구문 : document.querySelector("#name").value; (input구문)
+				// document.getElementById(name)
+				//자바스크립트 구문 : document.querySelector(".name").value; (클래스구문)
+				// document.getElementsByClassName(name)	
+					if($("#name").val()==""){
+					alert("이름을 입력하세요");	
+					document.querySelector("#name").focus();
+					return false;
+				}
+				frm.submit();
+				}
+			
+		</script>	
+			
+			
+			
+			
+	</head>
+	<body>
+		<form name="frm" method="post" action="http://localhost:8181/jsp1030/Ser06">
+			<label>이름</label>
+			<input text="text" name="name" id="name">
+			<input text="button" onclick="checkBtn()" id="btn" value="확인">
+			
+			
+		</form>
+			
+	
+	</body>
+</html>
