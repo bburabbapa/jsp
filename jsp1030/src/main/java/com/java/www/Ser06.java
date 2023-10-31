@@ -25,7 +25,7 @@ public class Ser06 extends HttpServlet {
 		writer.println("<title>서블릿페이지</title>");
 		writer.println("<style>div{background-color: yellow; width: 600px; height:600px; font-size:20px;text-align:center;border:1px solid black}</style>");
 		writer.println("<script>alert('입력한 이름: "+request.getParameter("name")+"');</script>");
-		writer.println("<script>console.log("+request.getParameter("name")+");</script>");
+		writer.println("<script>console.log("+request.getParameter("name")+");</script>");		
 		writer.println("</head>");
 		writer.println("<body>");
 		writer.println("<div>");
@@ -47,7 +47,7 @@ public class Ser06 extends HttpServlet {
 	
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		System.out.println();
-		doGet(request, response);
+		doAction(request, response);
 	}
 
 }

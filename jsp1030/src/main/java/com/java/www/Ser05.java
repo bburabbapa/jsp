@@ -29,7 +29,7 @@ public class Ser05 extends HttpServlet {
 
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		System.out.println("dopost post방식으로 들어올 때 계속 실행");
-		doGet(request, response);
+		doAction(request, response);
 	}
 
 }

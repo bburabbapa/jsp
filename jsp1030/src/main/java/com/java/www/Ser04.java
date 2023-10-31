@@ -40,7 +40,8 @@ public class Ser04 extends HttpServlet {
 
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		System.out.println();
-		doGet(request, response);
+		doAction(request, response);
+	
 	}
 
 }
