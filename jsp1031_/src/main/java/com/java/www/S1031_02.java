@@ -21,6 +21,7 @@ public class S1031_02 extends HttpServlet {
 		int total = kor+eng+math;
 		double avg = total/3.0;
 		String str_avg = String.format("%.2f", avg);
+		
 		System.out.println("subject : "+ Arrays.toString(request.getParameterValues("subject")));
 		String[] subjects = request.getParameterValues("subject");
 		String subject = "";
@@ -28,6 +29,8 @@ public class S1031_02 extends HttpServlet {
 			if(i==0) subject = subjects[i];     
 			else subject += ","+ subjects[i];   
 		}   
+	
+		
 		
 		request.setCharacterEncoding("utf-8"); //post한글처리
 		response.setContentType("text/html; charset=utf-8");

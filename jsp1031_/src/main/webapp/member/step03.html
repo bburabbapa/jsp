@@ -24,10 +24,63 @@
 <![endif]-->
 <script type="text/javascript">
 $(document).ready(function() {
-	
+				/*
+				$(".sbtnMini").click(function(){
+					if($("#id").val()==""){
+						alert("아이디를 입력하셔야 다음으로 진행됩니다.");
+						$("#pw").focus();
+						return false;
+					}
+					if($("#pw").val().length<3){
+						alert("패스워드는 3자리이상 입력하셔야 다음으로 진행됩니다.");
+						$("#pw").focus();
+						return false;
+					}
+				if($("#pw").val()!=$("#pw2").val()){
+					alert("패스워드가 일치하지 않습니다.")
+					$("#pw").focus();
+					return false;
+				}else {
+					alert("패스워드가 일치합니다.")
+				}		
+				*/	
+				$("#pw2").keyup(function(){	
+				var txt = ""; //txt 변수선언
+				if($("#pw").val()!=$("#pw2").val()){
+					txt ="<span class='mvalign orange'>* 비밀번호가 일치하지 않습니다.</span>"; //비밀번호파인드
+					$("#pw_txt").html(txt);
+					return false;
+				}else {
+					txt ="<span class='mvalign black'>* 비밀번호가 일치입니다.</span>";//비밀번호파인드
+					$("#pw_txt").html(txt);
+					return false;
+				}		
+			});
 
+		});
+				$(function(){
+					if($("#pw").val()!=$("#pw2").val()){
+						alert("패스워드가 일치하지 않습니다.")
+						$("#pw").focus();
+						return false;
+					}else{
+						alert("패스워드가 일치합니다.");
+					}
+				});
+				
+				$("#pw2").keyup(function(){
+					var txt="";
+					if($("#pw").val()!=$("#pw2").val()){
+						txt= "<span class='mvalign orange'>* 비밀번호가 일치하지 않습니다.</span>";
+						$("#pw").html(txt);
+						return false;
+					}else{
+						txt="<span class='mvalign black'>* 비밀번호가 일치입니다.</span>";
+						$("#pw").html(txt);
+						return false;
+					}
+				})
 
-});
 </script>
 </head>
 <body>
@@ -271,7 +324,7 @@ $(document).ready(function() {
 									<th scope="row"><span>비밀번호 *</span></th>
 									<td>
 										<ul class="pta">
-											<li class="r10"><input type="password" class="w134" /></li>
+											<li class="r10"><input type="password" name="pw" id="pw" class="w134" /></li>
 											<li><span class="mvalign">※ 영문 / 숫자 혼용으로 4~20자 까지 가능.</span></li>
 										</ul>
 									</td>
@@ -280,10 +333,9 @@ $(document).ready(function() {
 									<th scope="row"><span>비밀번호 확인 *</span></th>
 									<td>
 										<ul class="pta">
-											<li class="r10"><input type="password" class="w134" /></li>
-											<li>
-												<span class="mvalign black">* 비밀번호가 일치입니다.</span>
-												<span class="mvalign orange">* 비밀번호가 일치하지 않습니다.</span>
+											<li class="r10"><input type="password" name="pw2" id="pw2" class="w134" /></li>
+											<li id="pw_txt">
+												
 											</li>
 										</ul>
 									</td>
@@ -511,7 +563,7 @@ $(document).ready(function() {
 						<div class="bCenter">
 							<ul>
 								<li><a href="#" class="nbtnbig">취소하기</a></li>
-								<li><a href="#" class="sbtnMini">가입하기</a></li>
+								<li><a class="sbtnMini">가입하기</a></li>
 							</ul>
 						</div>
 					</div>

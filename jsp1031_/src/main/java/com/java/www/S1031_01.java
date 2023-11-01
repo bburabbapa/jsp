@@ -19,21 +19,22 @@ public class S1031_01 extends HttpServlet {
 		request.setCharacterEncoding("utf-8"); //post한글처리
 		response.setContentType("text/html; charset=utf-8");
 		PrintWriter writer = response.getWriter();
-		System.out.println("id : "+request.getParameter("id"));
-		System.out.println("hobby : "+ Arrays.toString(request.getParameterValues("hobby")));
+		System.out.println("id : "+request.getParameter("id"));//문자열 
+		System.out.println("hobby : "+ Arrays.toString(request.getParameterValues("hobby")));//체크박스배열로
 		//배열을 hobbys 변수에 입력
-		String[] hobbys = request.getParameterValues("hobby");
+		String[] hobbys = request.getParameterValues("hobby");//체크박스배열 values값으로
 		String hobby = "";
 		for(int i=0;i<hobbys.length;i++) {
 			if(i==0) hobby = hobbys[i];     // game
 			else hobby += ","+ hobbys[i];   // ,golf,run,cook
 		}   
+	
 		
-		
+
 		writer.println("<html>");
 		writer.println("<head><title>form데이터</title></head>");
 		writer.println("<body>");
-		writer.println("checkbox hobby배열 : "+Arrays.toString(request.getParameterValues("hobby")));
+		writer.println("checkbox hobby배열 : "+Arrays.toString(request.getParameterValues("hobbys")));
 		writer.println("<br>");
 		writer.println("checkbox hobby 1개 문자열 : "+hobby);
 		writer.println("<br>");
