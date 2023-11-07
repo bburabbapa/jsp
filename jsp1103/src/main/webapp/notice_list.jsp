@@ -14,38 +14,14 @@
   <link rel="stylesheet" href="css/notice_list.css">
   <style>
        a{text-decoration: none; color:black;}
+       #wrap a{color:white;font-size:13px;}
   </style>
 </head>
 <body>
-  <header>
-    <ul>
-      <li>회원가입</li> <span>|</span>
-      <li>로그인</li> <span>|</span>
-      <li>고객행복센터</li> <span>|</span>
-      <li>배송지역검색</li> <span>|</span>
-      <li>기프트카드 등록</li>
-    </ul>
-  </header>
-  <nav>
-    <div class="logo"></div>
-    <div id="search">
-      <div class="search"></div><br>
-      <span>메뉴찾기</span>
-    </div>
-    <div id="cart">
-      <div class="cart"></div><br>
-      <span>장바구니</span>
-    </div>
-    <div class="nav-menu">
-      <ul>
-        <li>COOKIT소개</li>
-        <li>COOKIT 메뉴</li>
-        <li>리뷰</li>
-        <li>이벤트</li>
-        <li>MY쿡킷</li>
-      </ul>
-    </div>
-  </nav>
+ <!--top부분추가-->
+<%@ include file="top.jsp"%>
+
+
   <section>
     <h1>NOTICE</h1>
     <div class="wrapper">
@@ -130,7 +106,7 @@
           <span>CJ그룹계열사 바로가기</span>
           <div class="shortcut"></div>
         </div>
-        <div class="call">고객행복센터 1668-1920</div>
+        <div class="call" >고객행복센터 1668-1920</div>
         <div class="inquery">1:1 문의</div>
       </div>
     </div>
