@@ -27,6 +27,8 @@
 <script type="text/javascript">
 $(document).ready(function() {
 	$(".sbtn").click(function(){
+		alert($("id").val());
+		alert($("pw").val());	
 		l_frm.submit();
 	});
 });

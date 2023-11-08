@@ -169,7 +169,7 @@ $(document).ready(function() {
 					<li><a href="../member/login.jsp">LOGIN</a></li>
 					<li><a href="#">JOIN</a></li>
 					<%}else{ %>
-					<li><%= session.getAttribute("session_nicName") %>님</li>
+					<li><%= session.getAttribute("session_nicname") %>님</li>
 					<li><a href="../member/logout.jsp">LOGOUT</a></li>
 					<%} %>
 					<li><a href="#">MY PAGE</a></li>
