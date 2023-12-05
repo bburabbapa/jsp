@@ -176,6 +176,85 @@ public class BoardDao {
 		}//
 		return bdto;
 	}//selectOne
+	
+	//이전글 가져오기
+	public BoardDto preSelectOne(int bno2) {
+		try {
+			conn = getConnection();
+			query = "select * from ("
+					+ "select row_number() over (order by bgroup desc, bstep asc) rnum , a.* from board a )"
+					+ "where rnum ="
+					+ "(select rnum from ("
+					+ "select row_number() over (order by bgroup desc, bstep asc) rnum , a.* from board a )"
+					+ "where bno=?)+1";
+			pstmt = conn.prepareStatement(query);
+			pstmt.setInt(1, bno2);
+			rs = pstmt.executeQuery();
+			if(rs.next()) {
+				// 
+				bno = rs.getInt("bno");
+				btitle = rs.getString("btitle");
+				bcontent = rs.getString("bcontent");
+				bdate = rs.getTimestamp("bdate");
+				id = rs.getString("id");
+				bgroup = rs.getInt("bgroup");
+				bstep = rs.getInt("bstep");
+				bindent = rs.getInt("bindent");
+				bhit = rs.getInt("bhit");
+				bfile = rs.getString("bfile");
+				bdto = new BoardDto(bno, btitle, bcontent, bdate, id, bgroup, bstep, bindent, bhit, bfile);
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+		}finally {
+			try {
+				if(rs!=null) rs.close();
+				if(pstmt!=null) pstmt.close();
+				if(conn!=null) conn.close();
+			} catch (Exception e2) { e2.printStackTrace();}
+		}//
+		return bdto;
+	}//preSelectOne
+	
+	//다음글 가져오기
+	public BoardDto nextSelectOne(int bno2) {
+		try {
+			conn = getConnection();
+			query = "select * from ("
+					+ "select row_number() over (order by bgroup desc, bstep asc) rnum , a.* from board a )"
+					+ "where rnum ="
+					+ "(select rnum from ("
+					+ "select row_number() over (order by bgroup desc, bstep asc) rnum , a.* from board a )"
+					+ "where bno=?)-1";
+			pstmt = conn.prepareStatement(query);
+			pstmt.setInt(1, bno2);
+			rs = pstmt.executeQuery();
+			if(rs.next()) {
+				// 
+				bno = rs.getInt("bno");
+				btitle = rs.getString("btitle");
+				bcontent = rs.getString("bcontent");
+				bdate = rs.getTimestamp("bdate");
+				id = rs.getString("id");
+				bgroup = rs.getInt("bgroup");
+				bstep = rs.getInt("bstep");
+				bindent = rs.getInt("bindent");
+				bhit = rs.getInt("bhit");
+				bfile = rs.getString("bfile");
+				bdto = new BoardDto(bno, btitle, bcontent, bdate, id, bgroup, bstep, bindent, bhit, bfile);
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+		}finally {
+			try {
+				if(rs!=null) rs.close();
+				if(pstmt!=null) pstmt.close();
+				if(conn!=null) conn.close();
+			} catch (Exception e2) { e2.printStackTrace();}
+		}//
+		return bdto;
+	}//nextSelectOne
+	
 
 	//게시글 1개 저장
 	public int insert(BoardDto bdto2) {
@@ -295,88 +374,8 @@ public class BoardDao {
 	}
 
 	
-	//이전글 가져오기
-	public BoardDto preSelectOne(int bno2) {
-		try {
-			conn = getConnection();
-			query = "select * from"
-					+ "(select rownum rnum, a.* from"
-					+ "(select * from board order by bgroup desc, bstep asc) a)"
-					+ "where rnum ="
-					+ "(select rnum from "
-					+ "(select rownum rnum, a.* from"
-					+ "(select * from board order by bgroup desc, bstep asc) a)"
-					+ "where bno=?)+1";
-			pstmt = conn.prepareStatement(query);
-			pstmt.setInt(1, bno2);
-			rs = pstmt.executeQuery();
-			if(rs.next()) {
-				// 
-				bno = rs.getInt("bno");
-				btitle = rs.getString("btitle");
-				bcontent = rs.getString("bcontent");
-				bdate = rs.getTimestamp("bdate");
-				id = rs.getString("id");
-				bgroup = rs.getInt("bgroup");
-				bstep = rs.getInt("bstep");
-				bindent = rs.getInt("bindent");
-				bhit = rs.getInt("bhit");
-				bfile = rs.getString("bfile");
-				bdto = new BoardDto(bno, btitle, bcontent, bdate, id, bgroup, bstep, bindent, bhit, bfile);
-			}
-		} catch (Exception e) {
-			e.printStackTrace();
-		}finally {
-			try {
-				if(rs!=null) rs.close();
-				if(pstmt!=null) pstmt.close();
-				if(conn!=null) conn.close();
-			} catch (Exception e2) { e2.printStackTrace();}
-		}//
-		return bdto;
-	}//pre
 
 	
-	//다음글 가져오기
-	public BoardDto nextSelectOne(int bno2) {
-		try {
-			conn = getConnection();
-			query = "select * from"
-					+ "(select rownum rnum, a.* from"
-					+ "(select * from board order by bgroup desc, bstep asc) a)"
-					+ "where rnum ="
-					+ "(select rnum from "
-					+ "(select rownum rnum, a.* from"
-					+ "(select * from board order by bgroup desc, bstep asc) a)"
-					+ "where bno=?)-1";
-			pstmt = conn.prepareStatement(query);
-			pstmt.setInt(1, bno2);
-			rs = pstmt.executeQuery();
-			if(rs.next()) {
-				// 
-				bno = rs.getInt("bno");
-				btitle = rs.getString("btitle");
-				bcontent = rs.getString("bcontent");
-				bdate = rs.getTimestamp("bdate");
-				id = rs.getString("id");
-				bgroup = rs.getInt("bgroup");
-				bstep = rs.getInt("bstep");
-				bindent = rs.getInt("bindent");
-				bhit = rs.getInt("bhit");
-				bfile = rs.getString("bfile");
-				bdto = new BoardDto(bno, btitle, bcontent, bdate, id, bgroup, bstep, bindent, bhit, bfile);
-			}
-		} catch (Exception e) {
-			e.printStackTrace();
-		}finally {
-			try {
-				if(rs!=null) rs.close();
-				if(pstmt!=null) pstmt.close();
-				if(conn!=null) conn.close();
-			} catch (Exception e2) { e2.printStackTrace();}
-		}//
-		return bdto;
-	}//next
 	
 	
 }
