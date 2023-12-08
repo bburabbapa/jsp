@@ -127,7 +127,7 @@ public class FController extends HttpServlet {
 			service.execute(request, response);
 			url = "n_delete.jsp";
 			break;
-		
+
 		default:
 			break;
 			

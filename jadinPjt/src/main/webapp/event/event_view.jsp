@@ -269,36 +269,51 @@ $(document).ready(function() {
                     			  url:"../CInsert",
                     			  type:"post",
                     			  data:{"bno":bno,"cpw":cpw,"ccontent":ccontent},
-                    			  dataType:"json",
+                    			  //dataType:"json",
                     			  success:function(data){
-                    				  alert("성공");
-                    				  console.log(data);
+                    				 // alert("성공");
+                    				 //alert("댓글번호: "+data.cno);
+                    				 //console.log("댓글번호: "+data.cno);
+                    				 //console.log(data);
+                    				  
+                    	    		  //댓글등록 태그
+                            		  var htmlData='';
+                            		  htmlData += '<ul id="'+data.cno+'">';
+                            		  htmlData += '<li class="name">'+data.id+' <span>['+data.cdate+']</span></li>';
+                            		  htmlData += '<li class="txt">'+data.ccontent+'</li>';
+                            		  htmlData += '<li class="btn">';
+                            		  htmlData += '<a class="rebtn">수정</a>&nbsp';
+                            		  htmlData += '<a class="rebtn">삭제</a>';
+                            		  htmlData += '</li>';
+                            		  htmlData += '</ul>';
+                            		  
+                            		  //댓글등록후 내용지우기
+          						      $(".replyBox").prepend(htmlData); //append()-마지막,prepend()-처음, html()-삭제후 추가
+                            		  $(".replyType").val("");//글삭제
+                            		  $(".replynum").val("");//비밀번호삭제
+                            		  alert("댓글을 등록합니다.");
+          						      
+                    				  
                     			  },
                     			  error:function(){
                     				  alert("실패");
                     			  }
+                    			  
+                            	   });
                     		  });
                     			  
-                  
+                  	
+                    		 /* <ul id="${ecomment.cno}">
+	  							<li class="name">${ecomment.id } <span>[${ecomment.cdate }]</span></li>
+	  							<li class="txt">${ecomment.ccontent }</li>
+	  							<li class="btn">
+	  								<a class="rebtn">수정</a>
+	  								<a href="#" class="rebtn">삭제</a>
+	  							</li>
+							</ul> */
                     		  
                     		  
-                    		  //댓글등록 태그
-                    		  var htmlData='';
-                    		  htmlData += '<ul id="0">';
-                    		  htmlData += '<li class="name">aaa <span>[2023-12-05]</span></li>';
-                    		  htmlData += '<li class="txt">'+ccontent+'</li>';
-                    		  htmlData += '<li class="btn">';
-                    		  htmlData += '<a class="rebtn">수정</a>&nbsp';
-                    		  htmlData += '<a class="rebtn">삭제</a>';
-                    		  htmlData += '</li>';
-                    		  htmlData += '</ul>';
-                    		  
-                    		  //댓글등록후 내용지우기
-  						      $(".replyBox").prepend(htmlData); //append()-마지막,prepend()-처음, html()-삭제후 추가
-                    		  alert("댓글을 등록합니다.");
-                    		  $(".replyType").val("");
-  						      
-                    	   });
+                
                        });
                     </script>
 

@@ -373,6 +373,129 @@ public class BoardDao {
 		return result;
 	}
 
+	//조회수 1증가
+	public void bhitUp(int bno2) {
+		try {
+			conn = getConnection();//데이터베이스연결을 가져옴
+			query = "update board set bhit = bhit+1 where bno=?";//게시물의 조회수를 1 증가시키는 sql쿼리문
+			pstmt = conn.prepareStatement(query);
+			//1,2
+			pstmt.setInt(1, bno2);//쿼리문의 매개변수에 게시물 번호를 설정
+			pstmt.executeUpdate();//쿼리문을 실행하여 게시물의 조회수를 1 증가시킴
+		} catch (Exception e) {
+			e.printStackTrace();//예외 발생 시 스택 트레이스 출력
+		}finally {
+			try {
+				if(rs!=null) rs.close();
+				if(pstmt!=null) pstmt.close();
+				if(conn!=null) conn.close();
+			} catch (Exception e2) { e2.printStackTrace();}
+		}
+		
+	}
+
+	//좋아요부분 - 내가 좋아요 누른 상태 - select
+	public int myLikeSelect(String id2, int bno2) {
+		int my_like_count = 0;
+		try {
+			conn = getConnection();//데이터베이스연결을 가져옴
+			query = "select count(*) my_like_count from b_likes where bno=? and id=? and like_status=1";
+			pstmt = conn.prepareStatement(query);//pstmt 초기화
+			pstmt.setInt(1, bno2);//쿼리 매개변수 설정
+			pstmt.setString(2, id2);
+			rs = pstmt.executeQuery();//쿼리 실행 결과
+			while(rs.next()) {//결과 집합에서 한 행씩 반복하면서 변수에 할당
+				my_like_count = rs.getInt("my_like_count");
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+		}finally {
+			try {//null값이 아닌 경우 닫기
+				if(rs!=null) rs.close();
+				if(pstmt!=null) pstmt.close();
+				if(conn!=null) conn.close();
+			} catch (Exception e2) { e2.printStackTrace();}
+		}//
+		return my_like_count;//메서드 종료 시 my_like_count 값을 반환
+	}//
+
+	//좋아요부분 - 전체 좋아요 개수 - select
+	public int allLikeSelect(int bno2) {
+		int all_like_count = 0;
+		try {
+			conn = getConnection();
+			query = "select count(*) all_like_count from b_likes where bno=? and like_status=1";//좋아요 상태가 1인 개수 
+			pstmt = conn.prepareStatement(query);//stmt는 준비된 문을 나타내며, 쿼리를 실행하기 위해 conn.prepareStatement(query)를 사용하여 초기화됩니다
+			//1,2
+			pstmt.setInt(1, bno2);
+			rs = pstmt.executeQuery();//쿼리의 매개변수를 설정
+			while(rs.next()) {//rs 변수는 쿼리 실행 결과를 나타내며, executeQuery 메서드를 사용하여 실행합니다.
+				all_like_count = rs.getInt("all_like_count");
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+		}finally {
+			try {
+				if(rs!=null) rs.close();
+				if(pstmt!=null) pstmt.close();
+				if(conn!=null) conn.close();
+			} catch (Exception e2) { e2.printStackTrace();}
+		}//
+		
+		return all_like_count;//메서드 종료 시 all_like_count 값을 반환
+	}//
+
+	//좋아요 상태 변경 - update
+	public int myLikeUpdate(String id2, int bno2, int like_status) {
+		int all_like_count = 0;
+		try {
+			conn = getConnection();
+			
+			//사용자가 좋아요를 누른 적이 있는지 확인하기 위해 "b_likes" 테이블에서 bno와 id를 이용하여 레코드 수를 조회합니다.
+			query = "select count(*) from b_likes where bno=? and id=?";
+			pstmt = conn.prepareStatement(query);
+			//1,2
+			pstmt.setInt(1, bno2);
+			pstmt.setString(2, id2);
+			rs = pstmt.executeQuery();
+			int count = 0;
+			if(rs.next()) {
+				count = rs.getInt("count");//조회된 레코드 수를 변수 count에 저장합니다.
+			}
+			
+			if(count==0) {//만약 count가 0이라면 사용자가 해당 게시물에 좋아요를 누른 적이 없는 경우이므로, "b_likes" 테이블에 새로운 레코드를 추가합니다.
+				//내가 좋아요 누른 적이 없는 경우 - insert
+				query = "insert into b_likes values (b_likes_seq.nextval,?,?,?)";
+				pstmt = conn.prepareStatement(query);
+				//1,2
+				pstmt.setInt(1, bno2);
+				pstmt.setString(2, id2);
+				pstmt.setInt(3, like_status);
+				pstmt.executeUpdate();
+			}else {//만약 count가 0이 아니라면 사용자가 이미 좋아요를 누른 적이 있는 경우이므로, 해당 레코드의 like_status 값을 업데이트합니다.
+				//내가 좋아요 누른 적이 있는 경우 - update
+				query = "update b_likes set like_status=? where bno=? and id=?";
+				pstmt = conn.prepareStatement(query);
+				//1,2
+				pstmt.setInt(1, like_status);
+				pstmt.setInt(2, bno2);
+				pstmt.setString(3, id2);
+				pstmt.executeUpdate();
+			}
+			//좋아요 전체개수 가져오기
+			all_like_count = allLikeSelect(bno2);//좋아요 전체 개수를 업데이트하기 위해 allLikeSelect 메서드를 호출하여 all_like_count를 가져옵니다.
+		} catch (Exception e) {
+			e.printStackTrace();
+		}finally {
+			try {//rs, pstmt, conn이 null이 아닌 경우에만 닫습니다.
+				if(rs!=null) rs.close();
+				if(pstmt!=null) pstmt.close();
+				if(conn!=null) conn.close();
+			} catch (Exception e2) { e2.printStackTrace();}
+		}//
+		return all_like_count;//메서드 종료 시 all_like_count 값을 반환
+	}
+
 	
 
 	

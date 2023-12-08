@@ -8,9 +8,10 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <script src="http://code.jquery.com/jquery-latest.min.js"></script>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
   <title>게시글 보기</title>
   <link href="https://fonts.googleapis.com/css?family=Noto+Sans+KR:400,500,700,900&display=swap&subset=korean" rel="stylesheet">
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.12.1/css/all.min.css">
+  <link rel="stylesheet" href="path/to/font-awesome/css/font-awesome.min.css">
   <link rel="stylesheet" href="css/style.css">
   <link rel="stylesheet" href="css/read.css">
   <script>
@@ -22,48 +23,13 @@
     	});
     });
   </script>
+  <style>
+     .fa{font-family: 'Font Awesome 5 Free';} 
+  </style>
 </head>
 
 <body>
-  <header>
-    <ul>
-      <c:if test="${session_id==null}">
-        <li><a href="join01_terms.do">회원가입</a></li><span>|</span>
-        <li><a href="login.do">로그인</a></li><span>|</span>
-      </c:if>
-      <c:if test="${session_id!=null}">
-		<li class="txtbold"><a href="m_info_input.do">${session_name}님</a></li><span>|</span>
-		<li><a href="logout.do">로그아웃</a></li><span>|</span>
-      </c:if>
-      <li><a href="n_list.do">고객행복센터</a></li><span>|</span>
-      <li>배송지역검색</li> <span>|</span>
-      <li>기프트카드 등록</li>
-    </ul>
-  </header>
-
-  <nav>
-     <a href="main.do"><div class="logo"></div></a>
-
-    <div id="search">
-      <div class="search"></div><br>
-      <span>메뉴찾기</span>
-    </div>
-
-    <div id="cart">
-      <div class="cart"></div><br>
-      <span>장바구니</span>
-    </div>
-
-    <div class="nav-menu">
-      <ul>
-        <li>COOKIT소개</li>
-        <li>COOKIT 메뉴</li>
-        <li>리뷰</li>
-        <li>이벤트</li>
-        <li>MY쿡킷</li>
-      </ul>  
-    </div>
-  </nav>
+  <%@include file="top.jsp" %>
 
   <section>
     <h1>NOTICE</h1>
@@ -75,6 +41,73 @@
       <tr>
         <td><strong>날짜</strong><span class="separator">|</span><fmt:formatDate value="${bdto.bdate}" pattern="yyyy-MM-dd"/></td>
       </tr>
+      <script>
+         $(function(){
+        	var bno = "${bdto.bno}";
+        	var myLike = "${my_like_count}"; //현재 좋아요 상태
+        	var htmlData = "";
+        	$("#likeStatus").click(function(){
+        		if(myLike==0){
+	        		alert("좋아요 추가");
+	        		alert($(".likeNo").text()+1);//현재 좋아요 개수 +1알림
+	        		var num = Number($(".likeNo").text())+1; //자바스크립트 형변환(number)를 사용하여 현재 좋아요 개수에서 1을 더함
+	        		myLike = 1;
+	        		//ajax를 통한 서버에 좋아요 상태 업데이트
+	        		$.ajax({
+	        			url:"MyLikeUpdate",
+	        			type:"post",
+	        			data:{"bno":bno,"like_status":1},
+	        			dataType:"json",
+	        			success:function(data){
+	        				alert("성공");
+	        				alert("총 좋아요 개수 : "+data.all_like_count);
+	        				//좋아요 개수를 업데이트하여 화면에 표시
+	        				htmlData = '';
+	    	        		htmlData += '좋아요 <i class="fa-heart fa-solid"></i><span class="likeNo"> '+num+'</span>';
+	    	        		$("#likeStatus").html(htmlData);
+	        			},
+	        			error:function(){
+	        				alert("실패");
+	        			}
+	        		});
+        		}else{
+	        		alert("좋아요 취소");
+	        		//alert($(".likeNo").text());
+	        		var num = Number($(".likeNo").text())-1; //자바스크립트 형변환(number)를 사용하여 현재 좋아요 개수에서 1을 뺌
+	        		myLike = 0;
+	        		//ajax를 통한 서버에 좋아요 상태 업데이트(좋아요 취소)
+	        		$.ajax({
+	        			url:"MyLikeUpdate",
+	        			type:"post",
+	        			data:{"bno":bno,"like_status":0},
+	        			dataType:"json",
+	        			success:function(data){
+	        				alert("성공");
+	        				alert("총 좋아요 개수 : "+data.all_like_count);
+	        				//좋아요 개수를 없데이트하여 화면에 표시
+	        				htmlData = '';
+	    	        		htmlData += '좋아요 <i class="fa-heart fa-regular"></i><span class="likeNo"> '+num+'</span>';
+	    	        		$("#likeStatus").html(htmlData);
+	        			},
+	        			error:function(){
+	        				alert("실패");
+	        			}
+	        		});
+        		}
+        	}); 
+         });
+      </script>
+      <tr>
+        <td id="likeStatus">좋아요
+        <c:if test="${my_like_count==1}">
+        <i class="fa-heart fa-solid"></i><span class="likeNo"> ${all_like_count}</span>
+        </c:if>
+        <c:if test="${my_like_count!=1}">
+        <i class="fa-heart fa-regular"></i><span class="likeNo"> ${all_like_count}</span>
+        </c:if>
+        </td>
+      </tr>
+      
       <tr>
         <td class="article">${bdto.bcontent}</td>
       </tr>
@@ -85,11 +118,13 @@
       </tr>
       <tr>
         <td><strong>다음글</strong> <span class="separator">|</span> 
-        <a href="n_view.do?page=${page}&bno=${nextDto.bno}&category=${category}&sword=${sword}">${nextDto.btitle }</a></td>
+          <a href="n_view.do?page=${page}&bno=${nextDto.bno}&category=${category}&sword=${sword}">${nextDto.btitle}</a> 
+        </td>
       </tr>
       <tr>
-        <td><strong>이전글</strong> <span class="separator">|</span>
-          <a href="n_view.do?page=${page}&bno=${preDto.bno}&category=${category}&sword=${sword}"> ${preDto.btitle }</a></td>
+        <td><strong>이전글</strong> <span class="separator">|</span> 
+          <a href="n_view.do?page=${page}&bno=${preDto.bno}&category=${category}&sword=${sword}">${preDto.btitle}</a> 
+        </td>
       </tr>
     </table>
 

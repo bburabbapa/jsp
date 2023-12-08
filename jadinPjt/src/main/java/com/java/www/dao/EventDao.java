@@ -153,7 +153,7 @@ public class EventDao {
 		ArrayList<EcommentDto> clist = new ArrayList();
 		try {
 			conn = getConnection();
-			query = "select * from ecomment where bno=?";
+			query = "select * from ecomment where bno=? order by cno desc";
 			pstmt = conn.prepareStatement(query);
 			pstmt.setInt(1, bno2);
 			rs = pstmt.executeQuery();
